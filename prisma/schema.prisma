@@ -25,5 +25,5 @@ model Post {
   title     String
   content   String
   viewCount Int      @default(0)
-  authorId  String   @map("author_id") @db.ObjectId
+  userId    String
 }
