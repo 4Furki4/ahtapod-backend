@@ -2,16 +2,23 @@ import express from 'express'
 import { validateData } from '../middleware/validationMiddleware'
 import { postAddSchema } from '../schemas/postSchemas'
 import prisma from '../../prisma/prisma'
-import { RequireAuthProp } from '@clerk/clerk-sdk-node'
-import { clerkClient } from '../lib/clerk'
+import { ClerkExpressRequireAuth } from '@clerk/clerk-sdk-node'
 
 export const postRouter = express.Router()
 
-postRouter.get('/', (req, res) => {
-    res.send('Hello World!')
+postRouter.get('/', async (req, res) => {
+    const { page, limit } = req.query
+    const posts = await prisma.post.findMany({
+        take: limit ? Number(limit) : 10,
+        skip: page ? (Number(page) - 1) * (limit ? Number(limit) : 10) : 0,
+        orderBy: {
+            createdAt: 'desc',
+        },
+    })
+    res.json(posts)
 })
 
-postRouter.post('/', validateData(postAddSchema), async (req, res) => {
+postRouter.post('/', ClerkExpressRequireAuth(), validateData(postAddSchema), async (req, res) => {
     const post = req.body
     const createdPost = await prisma.post.create({
         data: {
