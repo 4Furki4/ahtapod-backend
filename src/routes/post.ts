@@ -51,7 +51,24 @@ postRouter.post('/', ClerkExpressRequireAuth(), validateData(postAddSchema), asy
             userId: req.auth!.userId,
         }
     })
-    res.status(StatusCodes.CREATED).json(createdPost)
+    const user = await prisma.user.findUnique({
+        where: {
+            clerkUserId: createdPost.userId,
+        },
+        select: {
+            id: true,
+            email: true,
+            firstName: true,
+            lastName: true,
+            imageUrl: true,
+        }
+    })
+    res.status(StatusCodes.CREATED).json(
+        {
+            ...createdPost,
+            user,
+        }
+    )
 })
 
 postRouter.delete('/:id', ClerkExpressRequireAuth(), async (req, res) => {
