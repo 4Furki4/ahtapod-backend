@@ -1,6 +1,6 @@
 import express from 'express'
 import { StatusCodes } from 'http-status-codes'
-import prisma from '../../prisma/prisma'
+import prisma from '../prisma/prisma'
 export const userRouter = express.Router()
 
 userRouter.get('/count', async (req, res) => {

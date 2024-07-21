@@ -1,9 +1,9 @@
 import express from 'express'
 import { validateData } from '../middleware/validationMiddleware'
 import { postAddSchema } from '../schemas/postSchemas'
-import prisma from '../../prisma/prisma'
 import { ClerkExpressRequireAuth } from '@clerk/clerk-sdk-node'
 import { StatusCodes } from 'http-status-codes'
+import prisma from '../prisma/prisma'
 
 export const postRouter = express.Router()
 
