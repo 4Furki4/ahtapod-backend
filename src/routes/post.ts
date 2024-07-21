@@ -57,7 +57,7 @@ postRouter.post('/', ClerkExpressRequireAuth(), validateData(postAddSchema), asy
 postRouter.delete('/:id', ClerkExpressRequireAuth(), async (req, res) => {
     const { id } = req.params
     const role = req.auth.sessionClaims.org_role
-    if (role !== 'admin') {
+    if (role !== 'org:manager') {
         return res.status(StatusCodes.FORBIDDEN).json({ message: 'You are not authorized to delete this post' })
     }
     const post = await prisma.post.findUnique({
