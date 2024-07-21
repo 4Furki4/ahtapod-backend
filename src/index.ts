@@ -7,6 +7,7 @@ import {
   ClerkExpressRequireAuth,
   StrictAuthProp,
 } from '@clerk/clerk-sdk-node';
+import { userRouter } from './routes/user'
 
 
 const port = process.env.PORT || 3001;
@@ -24,7 +25,7 @@ app.use(cors())
 app.use(express.json())
 app.use(bodyParser.json())
 app.use('/api/posts', postRouter)
-
+app.use('/api/users', userRouter)
 // @ts-ignore
 app.use((
   err: any,

@@ -137,3 +137,9 @@ postRouter.put('/:id', ClerkExpressRequireAuth(), validateData(postAddSchema), a
         }
     )
 })
+
+
+postRouter.get('/count', async (req, res) => {
+    const totalPosts = await prisma.post.count()
+    res.status(StatusCodes.OK).json({ count: totalPosts })
+})
