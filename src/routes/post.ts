@@ -92,3 +92,48 @@ postRouter.delete('/:id', ClerkExpressRequireAuth(), async (req, res) => {
     })
     res.status(StatusCodes.OK).json({ message: 'Post deleted', postId: id })
 })
+
+
+postRouter.put('/:id', ClerkExpressRequireAuth(), validateData(postAddSchema), async (req, res) => {
+    const { id } = req.params
+    const role = req.auth.sessionClaims.org_role
+    if (role !== 'org:manager') {
+        return res.status(StatusCodes.FORBIDDEN).json({ message: 'You are not authorized to edit this post' })
+    }
+    const post = await prisma.post.findUnique({
+        where: {
+            id
+        }
+    })
+    if (!post) {
+        return res.status(404).json({ message: 'Post not found' })
+    }
+    const updatedPost = await prisma.post.update({
+        where: {
+            id
+        },
+        data: {
+            title: req.body.title,
+            content: req.body.content,
+            updatedAt: new Date(),
+        }
+    })
+    const user = await prisma.user.findUnique({
+        where: {
+            clerkUserId: updatedPost.userId,
+        },
+        select: {
+            id: true,
+            email: true,
+            firstName: true,
+            lastName: true,
+            imageUrl: true,
+        }
+    })
+    res.status(StatusCodes.OK).json(
+        {
+            ...updatedPost,
+            user,
+        }
+    )
+})
