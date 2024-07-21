@@ -24,6 +24,7 @@ postRouter.get('/', async (req, res) => {
             select: {
                 id: true,
                 email: true,
+                username: true,
                 firstName: true,
                 lastName: true,
                 imageUrl: true,
@@ -57,7 +58,7 @@ postRouter.post('/', ClerkExpressRequireAuth(), validateData(postAddSchema), asy
         },
         select: {
             id: true,
-            email: true,
+            username: true,
             firstName: true,
             lastName: true,
             imageUrl: true,
@@ -125,6 +126,7 @@ postRouter.put('/:id', ClerkExpressRequireAuth(), validateData(postAddSchema), a
         select: {
             id: true,
             email: true,
+            username: true,
             firstName: true,
             lastName: true,
             imageUrl: true,
