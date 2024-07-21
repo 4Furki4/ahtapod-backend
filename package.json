@@ -2,10 +2,10 @@
   "name": "rest-express",
   "version": "1.0.0",
   "license": "MIT",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "dev": "nodemon src/index.ts",
-    "build": "tsc -p tsconfig.json",
+    "build": "tsc",
     "start": "node dist/index.js"
   },
   "dependencies": {
