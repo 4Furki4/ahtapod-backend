@@ -3,6 +3,7 @@ import { validateData } from '../middleware/validationMiddleware'
 import { postAddSchema } from '../schemas/postSchemas'
 import prisma from '../../prisma/prisma'
 import { ClerkExpressRequireAuth } from '@clerk/clerk-sdk-node'
+import { StatusCodes } from 'http-status-codes'
 
 export const postRouter = express.Router()
 
@@ -34,7 +35,7 @@ postRouter.get('/', async (req, res) => {
         }
     }))
     const totalPosts = await prisma.post.count()
-    res.json({
+    res.status(StatusCodes.OK).json({
         posts: postWithUsers,
         totalPosts,
         totalPages: Math.ceil(totalPosts / Number(limit)),
@@ -50,5 +51,23 @@ postRouter.post('/', ClerkExpressRequireAuth(), validateData(postAddSchema), asy
             userId: req.auth!.userId,
         }
     })
-    res.status(201).json(createdPost)
+    res.status(StatusCodes.CREATED).json(createdPost)
+})
+
+postRouter.delete('/:id', ClerkExpressRequireAuth(), async (req, res) => {
+    const { id } = req.params
+    const post = await prisma.post.findUnique({
+        where: {
+            id
+        }
+    })
+    if (!post) {
+        return res.status(404).json({ message: 'Post not found' })
+    }
+    await prisma.post.delete({
+        where: {
+            id
+        }
+    })
+    res.status(StatusCodes.OK).json({ message: 'Post deleted', postId: id })
 })
