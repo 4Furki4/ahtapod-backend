@@ -3,6 +3,8 @@
 This is the backend part of the Ahtapod Case Study. It is a REST API built with Express.js and Prisma. It is a simple blog API for CRUD operations on posts and users.
 See the [`frontend repository here`](https://github.com/4furki4/ahtapod-case)
 
+server is deployed on render.com using free tier. You can test it here: https://ahtapod-backend.onrender.com
+
 ## Features
 
 - Some endpoints are protected with JWT authentication using Clerk SDK for Node.js.
