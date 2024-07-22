@@ -44,6 +44,31 @@ CLERK_SECRET_KEY=
 - `api/users/count`
   - `GET` - Get the total number of users
 
+## Database Schema
+
+````prisma
+model User {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  email       String
+  username    String   @unique
+  firstName   String?
+  lastName    String?
+  imageUrl    String?
+  clerkUserId String   @unique
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Post {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  title     String
+  content   String
+  viewCount Int      @default(0)
+  userId    String
+}
+````
 
 ## Getting started
 
