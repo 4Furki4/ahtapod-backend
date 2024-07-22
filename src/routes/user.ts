@@ -5,5 +5,6 @@ export const userRouter = express.Router()
 
 userRouter.get('/count', async (req, res) => {
     const count = await prisma.user.count()
-    res.status(StatusCodes.OK).json({ count })
+    const response = { count }
+    res.status(StatusCodes.OK).json(response)
 })
